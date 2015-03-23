@@ -72,10 +72,12 @@ $(document).ready(function(){
 			board.position(game.fen());
 			firebase.child('fen').set(game.fen());
 		}
-		if (game.turn() === 'b') {
-			$('.game-state').text('Black to move')
+		if (game.game_over()) {
+			$('.game-state').text('Game over');
+		} else if (game.turn() === 'b') {
+			$('.game-state').text('Black to move');
 		} else {
-			$('.game-state').text('White to move')
+			$('.game-state').text('White to move');
 		}
 	}
 
