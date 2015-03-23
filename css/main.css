@@ -10,7 +10,7 @@
 
 .button {
 	float: left;
-	margin: 20px;
+	margin: 20px 10px;
 	width: 48px;
 	height: 48px;
 	border: 2px solid #333;
@@ -27,8 +27,8 @@
 .reset.button { background-image: url("../img/ic_refresh_24px.svg"); }
 
 .game-state {
-	float: left;
-	margin: 28px 20px;
+	float: right;
+	margin: 28px 10px;
 	font-family: "Helvetica Neue";
 	font-size: 32px;
 	vertical-align: bottom;
