@@ -1,0 +1,27 @@
+.board {
+	width: 600px;
+	margin: 0 auto;
+}
+
+.button-row {
+	width: 600px;
+	margin: 0 auto;
+}
+
+.button {
+	float: left;
+	margin: 20px;
+	width: 48px;
+	height: 48px;
+	border: 2px solid #333;
+	border-radius: 5px;
+	background-size: cover;
+}
+
+.button:active {
+	background-color: #ddd;
+}
+
+.back.button { background-image: url("../img/ic_arrow_back_24px.svg"); }
+.forward.button { background-image: url("../img/ic_arrow_forward_24px.svg"); }
+.reset.button { background-image: url("../img/ic_refresh_24px.svg"); }
