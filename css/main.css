@@ -25,3 +25,12 @@
 .back.button { background-image: url("../img/ic_arrow_back_24px.svg"); }
 .forward.button { background-image: url("../img/ic_arrow_forward_24px.svg"); }
 .reset.button { background-image: url("../img/ic_refresh_24px.svg"); }
+
+.game-state {
+	float: left;
+	height: 48px;
+	margin: 20px;
+	font-family: "Helvetica Neue";
+	font-size: 32px;
+	vertical-align: middle;
+}

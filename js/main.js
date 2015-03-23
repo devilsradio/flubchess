@@ -46,7 +46,6 @@ $(document).ready(function(){
 		if (move === null) {
 			return 'snapback';
 		}
-		updateStatus();
 	};
 
 	var onSnapEnd = function() {
@@ -73,6 +72,11 @@ $(document).ready(function(){
 			board.position(game.fen());
 			firebase.child('fen').set(game.fen());
 		}
+		if (game.turn() === 'b') {
+			$('.game-state').text('Black to move')
+		} else {
+			$('.game-state').text('White to move')
+		}
 	}
 
 	firebase.child('fen').on('value', function(value) {
@@ -91,35 +95,6 @@ $(document).ready(function(){
 			updateBoard(fen);
 		}
 	});
-
-	var updateStatus = function() {
-		var status = '';
-
-		var moveColor = 'White';
-		if (game.turn() === 'b') {
-			moveColor = 'Black';
-		}
-
-		// checkmate?
-		if (game.in_checkmate() === true) {
-			status = 'Game over, ' + moveColor + ' is in checkmate.';
-		}
-
-		// draw?
-		else if (game.in_draw() === true) {
-			status = 'Game over, drawn position';
-		}
-
-		// game still on
-		else {
-			status = moveColor + ' to move';
-
-			// check?
-			if (game.in_check() === true) {
-				status += ', ' + moveColor + ' is in check';
-			}
-		}
-	}
 
 	$('.back.button').click(onUndo);
 	$('.reset.button').click(onReset);
