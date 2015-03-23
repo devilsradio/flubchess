@@ -8,10 +8,10 @@ var randomId = function() {
 }
 
 var getGameId = function() {
-	var hash = _.trimLeft(window.location.hash, '#');
-	if (hash === '') {
+	var path = _.trimLeft(window.location.pathname, '/');
+	if (path === '') {
 		var newGameId = randomId();
-		window.location.hash = newGameId;
+		window.location.pathname = '/' + newGameId;
 		return newGameId;
 	} else {
 		return hash;
