@@ -14,7 +14,7 @@ var getGameId = function() {
 		window.location.pathname = '/' + newGameId;
 		return newGameId;
 	} else {
-		return hash;
+		return path;
 	}
 }
 
