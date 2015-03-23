@@ -1,8 +1,8 @@
 var randomId = function() {
 	var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
 	var ret = '';
-	for (var ii = 0; ii<12; ii++) {
-		ret += chars[_.random(0, chars.length)];
+	for (var ii = 0; ii < 6; ii++) {
+		ret += chars[_.random(0, chars.length-1)];
 	}
 	return ret;
 }
