@@ -33,13 +33,15 @@ $(document).ready(function(){
 		gameId = getGameId(),
 		game = new Chess();
 
+	// Initialize empty chessboard so there's less flashing at start.
+	var throwaway = new ChessBoard('board');
 	var firebase = new Firebase('https://flubchess.firebaseio.com/' + gameId);
 
 	var onDragStart = function(source, piece, position, orientation) {
 		unalertTitle();
 		if (
 				game.game_over() === true ||
-	    		(game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+				(game.turn() === 'w' && piece.search(/^b/) !== -1) ||
 				(game.turn() === 'b' && piece.search(/^w/) !== -1)
 			) {
     			return false;
