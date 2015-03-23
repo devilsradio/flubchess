@@ -1,10 +1,21 @@
+var getGameId = function() {
+	if (window.location != '') {
+		var newGameId = 'abcdef';
+		// window.location = newGameId;
+		return newGameId;
+	} else {
+		// return window.location;
+	}
+}
+
 $(document).ready(function(){
 
 	var board,
 		config,
+		gameId = getGameId(),
 		game = new Chess();
 
-	var firebase = new Firebase('https://fc9s6ylkgrt.firebaseio-demo.com/');
+	var firebase = new Firebase('https://fc9s6ylkgrt.firebaseio-demo.com/' + gameId);
 
 	var onDragStart = function(source, piece, position, orientation) {
 		if (
@@ -29,18 +40,37 @@ $(document).ready(function(){
 	};
 
 	var onSnapEnd = function() {
-		board.position(game.fen());
+		updateBoard();
 	};
 
 	var onReset = function() {
 		game.reset();
-		board.position(game.fen());
+		updateBoard();
 	};
 
 	var onUndo = function() {
 		game.undo();
-		board.position(game.fen());
+		updateBoard();
 	}
+
+	var updateBoard = function(fen) {
+		if (fen) {
+			if (game.fen() != fen) {
+				game.load(fen);
+				board.position(fen);
+			}
+		} else {
+			board.position(game.fen());
+			firebase.child('fen').set(game.fen());
+		}
+	}
+
+	firebase.child('fen').on('value', function(value) {
+		var fen = value.val();
+		if (fen) {
+			updateBoard(fen);
+		}
+	});
 
 	var updateStatus = function() {
 		var status = '';
