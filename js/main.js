@@ -1,10 +1,20 @@
+var randomId = function() {
+	var chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+	var ret = '';
+	for (var ii = 0; ii<12; ii++) {
+		ret += chars[_.random(0, chars.length)];
+	}
+	return ret;
+}
+
 var getGameId = function() {
-	if (window.location != '') {
-		var newGameId = 'abcdef';
-		// window.location = newGameId;
+	var hash = _.trimLeft(window.location.hash, '#');
+	if (hash === '') {
+		var newGameId = randomId();
+		window.location.hash = newGameId;
 		return newGameId;
 	} else {
-		// return window.location;
+		return hash;
 	}
 }
 
@@ -67,6 +77,16 @@ $(document).ready(function(){
 
 	firebase.child('fen').on('value', function(value) {
 		var fen = value.val();
+		if (typeof(board) === 'undefined') {
+			var config = {
+				draggable: true,
+				position: fen || 'start',
+				onDragStart: onDragStart,
+				onDrop: onDrop,
+				onSnapEnd: onSnapEnd
+			};
+			board = new ChessBoard('board', config);
+		}
 		if (fen) {
 			updateBoard(fen);
 		}
@@ -100,16 +120,6 @@ $(document).ready(function(){
 			}
 		}
 	}
-
-	config = {
-		draggable: true,
-		position: 'start',
-		onDragStart: onDragStart,
-		onDrop: onDrop,
-		onSnapEnd: onSnapEnd
-	};
-
-	board = new ChessBoard('board', config);
 
 	$('.back.button').click(onUndo);
 	$('.reset.button').click(onReset);
