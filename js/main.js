@@ -18,6 +18,14 @@ var getGameId = function() {
 	}
 }
 
+var alertTitle = function() {
+	document.title = '(!) Flubchess';
+}
+
+var unalertTitle = function() {
+	document.title = 'Flubchess';
+}
+
 $(document).ready(function(){
 
 	var board,
@@ -28,6 +36,7 @@ $(document).ready(function(){
 	var firebase = new Firebase('https://fc9s6ylkgrt.firebaseio-demo.com/' + gameId);
 
 	var onDragStart = function(source, piece, position, orientation) {
+		unalertTitle();
 		if (
 				game.game_over() === true ||
 	    		(game.turn() === 'w' && piece.search(/^b/) !== -1) ||
@@ -65,6 +74,7 @@ $(document).ready(function(){
 	var updateBoard = function(fen) {
 		if (fen) {
 			if (game.fen() != fen) {
+				alertTitle();
 				game.load(fen);
 				board.position(fen);
 			}
