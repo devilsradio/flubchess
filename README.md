@@ -1,2 +1,2 @@
 # flubchess
-A real time chess engine using chessboard.js and chess.js
+A live chess game using chessboard.js and chess.js.
