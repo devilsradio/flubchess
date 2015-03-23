@@ -33,7 +33,7 @@ $(document).ready(function(){
 		gameId = getGameId(),
 		game = new Chess();
 
-	var firebase = new Firebase('https://fc9s6ylkgrt.firebaseio-demo.com/' + gameId);
+	var firebase = new Firebase('https://flubchess.firebaseio.com/' + gameId);
 
 	var onDragStart = function(source, piece, position, orientation) {
 		unalertTitle();
