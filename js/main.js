@@ -61,16 +61,6 @@ $(document).ready(function(){
 
 	var onSnapEnd = function() {
 		updateBoard();
-	};
-
-	var onReset = function() {
-		game.reset();
-		updateBoard();
-	};
-
-	var onUndo = function() {
-		game.undo();
-		updateBoard();
 	}
 
 	var updateBoard = function(fen) {
@@ -82,7 +72,7 @@ $(document).ready(function(){
 			}
 		} else {
 			board.position(game.fen());
-			firebase.child('fen').set(game.fen());
+			updateFirebase(game.fen());
 		}
 		if (game.game_over()) {
 			$('.game-state').text('Game over');
@@ -91,6 +81,67 @@ $(document).ready(function(){
 		} else {
 			$('.game-state').text('White to move');
 		}
+	}
+
+	var updateFirebase = function(fen) {
+		firebase.transaction(function(state) {
+			if (state === null) {
+				return {
+					backwards: [(new Chess().fen())],
+					forwards: [],
+					fen: fen
+				}
+			} else {
+				var oldFen = state.fen;
+				if (typeof(state.backwards) == "undefined") {
+					state.backwards = [];
+				}
+				state.backwards.push(oldFen);
+				state.fen = fen;
+				state.forwards = [];
+				return state;
+			}
+		});
+	}
+
+	var goBackwards = function() {
+		firebase.transaction(function(state) {
+			if (state === null) {
+				return null;
+			} else if (typeof(state.backwards) == "undefined") {
+				return state;
+			} else {
+				if (typeof(state.forwards) == "undefined") {
+					state.forwards = [];
+				}
+				var newFen = state.backwards.pop();
+				state.forwards.unshift(state.fen);
+				state.fen = newFen;
+				return state;
+			}
+		});
+	}
+
+	var goForwards = function() {
+		firebase.transaction(function(state) {
+			if (state === null) {
+				return null;
+			} else if (typeof(state.forwards) == "undefined") {
+				return state;
+			} else {
+				if (typeof(state.backwards) == "undefined") {
+					state.backwards = [];
+				}
+				var newFen = state.forwards.shift();
+				state.backwards.push(state.fen);
+				state.fen = newFen;
+				return state;
+			}
+		});
+	}
+
+	var goReset = function() {
+		// do nothing for now
 	}
 
 	firebase.child('fen').on('value', function(value) {
@@ -110,7 +161,7 @@ $(document).ready(function(){
 		}
 	});
 
-	$('.back.button').click(onUndo);
-	$('.reset.button').click(onReset);
+	$('.back.button').click(goBackwards);
+	$('.forward.button').click(goForwards);
 
 });
